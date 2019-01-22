@@ -9,10 +9,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Todo List View Controller-->
+        <!--ToDoListViewController-->
         <scene sceneID="a4Z-eN-cjL">
             <objects>
-                <tableViewController id="7vF-l1-K75" customClass="TodoListViewController" customModule="Todoey" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="ToDoListViewController" id="7vF-l1-K75" customClass="TodoListViewController" customModule="Todoey" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="MN9-TX-s86">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -32,20 +32,37 @@
                             <outlet property="delegate" destination="7vF-l1-K75" id="eQi-lk-3Jo"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="Xsm-Cy-Oz1"/>
+                    <navigationItem key="navigationItem" id="Xsm-Cy-Oz1">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="PHa-tn-0dq">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="addButtonPressed:" destination="7vF-l1-K75" id="mFU-lD-gGh"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SA8-Xi-nZl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1288.8" y="99.400299850074973"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Todoey-->
         <scene sceneID="Q5W-py-Jm9">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="IIi-JX-6jB" sceneMemberID="viewController">
+                <navigationController title="Todoey" automaticallyAdjustsScrollViewInsets="NO" id="IIi-JX-6jB" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="bvk-aM-lzh">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.20392156859999999" green="0.51484364510000002" blue="0.76744434930000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="textShadowColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        </textAttributes>
+                        <textAttributes key="largeTitleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="textShadowColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
