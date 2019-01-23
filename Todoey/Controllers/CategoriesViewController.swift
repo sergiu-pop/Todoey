@@ -8,6 +8,7 @@
 
 import UIKit
 import RealmSwift
+import SwipeCellKit
 
 class CategoriesViewController: UITableViewController {
     
@@ -18,6 +19,7 @@ class CategoriesViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        tableView.rowHeight = 78.0
         self.loadCategories()
     }
 
@@ -53,8 +55,11 @@ class CategoriesViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath) as! SwipeTableViewCell
+        
         cell.textLabel?.text = categories?[indexPath.row].name ?? "No categories added yet"
+        
+        cell.delegate = self
         
         return cell
     }
@@ -95,4 +100,34 @@ class CategoriesViewController: UITableViewController {
         
         tableView.reloadData()
     }
+}
+
+//MARK: - SwipeCell delegate methods
+
+extension CategoriesViewController : SwipeTableViewCellDelegate {
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        guard orientation == .right else { return nil }
+        
+        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
+            do {
+                try self.realm.write {
+                    if let category = self.categories?[indexPath.row] {
+                        self.realm.delete(category)
+                    }
+                }
+                self.loadCategories()
+            }
+            catch {
+                print("Error deleting category from realm: \(error)")
+            }
+        }
+        
+        // customize the action appearance
+        deleteAction.image = UIImage(named: "trash-icon")
+        
+        return [deleteAction]
+    }
+    
+    
 }
