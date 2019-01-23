@@ -7,14 +7,18 @@
 //
 
 import UIKit
+import RealmSwift
 
 class CategoriesViewController: UITableViewController {
     
-    var categories = [String]()
+    let realm = try! Realm()
+    
+    var categories : Results<Category>?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.loadCategories()
     }
 
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
@@ -24,7 +28,10 @@ class CategoriesViewController: UITableViewController {
         let action = UIAlertAction(title: "Add", style: .default) { (action) in
             
             if let textField = alert.textFields?[0] {
-                self.categories.append(textField.text!)
+                let newCategory = Category()
+                newCategory.name = textField.text!
+                
+                self.save(category: newCategory)
             }
             
         }
@@ -42,12 +49,12 @@ class CategoriesViewController: UITableViewController {
     //MARK: - TableView Delegate Methods
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return categories.count
+        return categories?.count ?? 1
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
-        cell.textLabel?.text = categories[indexPath.row]
+        cell.textLabel?.text = categories?[indexPath.row].name ?? "No categories added yet"
         
         return cell
     }
@@ -60,5 +67,32 @@ class CategoriesViewController: UITableViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destinationVC = segue.destination as! TodoListViewController
+        
+        if let indexPath = tableView.indexPathForSelectedRow {
+            destinationVC.selectedCategory = categories?[indexPath.row]
+        }
+    }
+    
+    //MARK: - Data manipulation methods
+    
+    func loadCategories() {
+        
+        categories = realm.objects(Category.self)
+        
+        tableView.reloadData()
+    }
+    
+    func save(category: Category) {
+        
+        do {
+            try realm.write {
+                realm.add(category)
+            }
+        }
+        catch {
+            print("Error writing using realm: \(error)")
+        }
+        
+        tableView.reloadData()
     }
 }
